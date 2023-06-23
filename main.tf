@@ -43,3 +43,12 @@ resource "aws_instance" "rabbitmq" {
     component = var.component
   })
 }
+
+resource "aws_route53_record" "rabbitmq" {
+  zone_id = var.zone_id
+  name    = "${var.component}-${var.env}"
+  type    = "A"
+  ttl     = 30
+  records = [aws_instance.rabbitmq.private_ip]
+}
+
